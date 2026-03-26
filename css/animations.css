@@ -1,0 +1,124 @@
+/* ══ KEYFRAMES ══ */
+
+@keyframes pulseRing{0%{transform:scale(.8);opacity:.5}70%{transform:scale(1.9);opacity:0}100%{transform:scale(.8);opacity:0}}
+
+@keyframes orbDrift1{0%{transform:translate(0,0);}100%{transform:translate(40px,30px);}}
+@keyframes orbDrift2{0%{transform:translate(0,0);}100%{transform:translate(-30px,40px);}}
+@keyframes orbDrift3{0%{transform:translate(0,0);}100%{transform:translate(25px,-35px);}}
+
+@media(prefers-reduced-motion:no-preference){
+  .hero-orb-1{animation:orbDrift1 14s ease-in-out infinite alternate;}
+  .hero-orb-2{animation:orbDrift2 16s ease-in-out infinite alternate;}
+  .hero-orb-3{animation:orbDrift3 18s ease-in-out infinite alternate;}
+}
+
+@keyframes badgeFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-4px)}
+}
+@media(prefers-reduced-motion:no-preference){.hero-badge-dot::after{animation:badgePulse 2.2s ease-out infinite;}}
+@keyframes badgePulse{
+  0%{transform:scale(1);opacity:.6;}
+  100%{transform:scale(3);opacity:0;}
+}
+
+@keyframes nameShimmer{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* Typed cursor */
+.typed-cursor{
+  display:inline-block;
+  color:#67e8f9;
+  font-weight:300;
+  margin-left:2px;
+  animation:cursorBlink .7s step-end infinite;
+  text-shadow: 0 0 8px rgba(103,232,249,.8);
+}
+@keyframes cursorBlink{0%,100%{opacity:1}50%{opacity:0}}
+
+@keyframes scrollDrop{
+  0%{transform:scaleY(0);opacity:1;}
+  60%{transform:scaleY(1);opacity:1;}
+  100%{transform:scaleY(1);opacity:0;}
+}
+
+/* Open-to-work dot animation */
+@media(prefers-reduced-motion:no-preference){.open-pulse-dot::after{animation:pulseRing 1.8s ease-out infinite;}}
+
+/* Hire banner pulse */
+@media(prefers-reduced-motion:no-preference){.hire-banner-pulse::after{animation:pulseRing 1.8s ease-out infinite;}}
+
+/* Cert spinner */
+@keyframes certSpin{to{transform:rotate(360deg)}}
+
+/* Stat counter pulse */
+@keyframes statPulse{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.08)}
+  100%{transform:scale(1)}
+}
+
+/* Button pulse ring */
+@keyframes btnPulseRing{
+  0%{transform:scale(1);opacity:0.8}
+  70%{transform:scale(1.12);opacity:0}
+  100%{transform:scale(1.12);opacity:0}
+}
+
+/* Testimonial ring orbit */
+@keyframes ringOrbit{
+  0%{transform:rotateX(72deg) rotateZ(0deg);}
+  100%{transform:rotateX(72deg) rotateZ(360deg);}
+}
+@media(prefers-reduced-motion:reduce){
+  .testimonial-ring--outer,.testimonial-ring--inner{animation:none;}
+}
+
+/* Gallery tunnel pulse */
+@keyframes tunnelPulse{
+  0%{opacity:0.5;transform:translateZ(calc(var(--r) * -30px)) scaleX(0.97);}
+  100%{opacity:1;transform:translateZ(calc(var(--r) * -30px)) scaleX(1.03);}
+}
+@media(prefers-reduced-motion:reduce){
+  .gallery-tunnel-ring{animation:none;}
+}
+
+/* ══ FOCUS VISIBLE — keyboard navigation ══ */
+:focus-visible{outline:2px solid var(--primary);outline-offset:3px;border-radius:3px;}
+a:focus-visible,button:focus-visible{border-radius:4px;}
+.skill-card:focus-visible,.timeline-item:focus-visible{outline-offset:4px;}
+
+/* ══ PREFERS-REDUCED-MOTION ══ */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+  }
+  html{scroll-behavior:auto!important}
+  /* Reveal GSAP-hidden hero elements instantly */
+  .hero-anim-title,.hero-anim-subtitle,.hero-anim-desc,.hero-anim-cta>*{opacity:1!important;transform:none!important;}
+  .hero-section{animation:none!important;background-position:0% 0%!important;}
+  .open-pulse-dot::after{animation:none!important;}
+  .cert-spinner-ring{animation:none!important;}
+}
+
+/* ══ PRINT STYLES ══ */
+@media print{
+  *,*::before,*::after{animation:none!important;transition:none!important;}
+  body{background:#fff!important;color:#000!important;font-size:11pt;}
+  #site-header,.mobile-sidebar,.sidebar-backdrop,.hire-banner,#scrollBar,
+  #galaxyCanvas,#backToTop,.header-menu-btn,.skip-link{display:none!important;}
+  main{display:block;}
+  section{page-break-inside:avoid;padding:1rem 0!important;}
+  /* Show only resume section in print */
+  section:not(#resume){display:none!important;}
+  #resume{display:block!important;}
+  .resume-preview{border:none;box-shadow:none;}
+  .resume-preview iframe{height:auto;min-height:100vh;}
+  footer{position:static!important;border:none;background:transparent!important;color:#000!important;}
+  a[href]::after{content:" (" attr(href) ")";font-size:9pt;color:#555;}
+  a[href^="#"]::after,.btn::after{content:none;}
+}

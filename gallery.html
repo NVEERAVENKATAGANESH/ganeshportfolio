@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Gallery — Veera Venkata Ganesh Nurukurthi. Photos and videos from events, hackathons, and experiences." />
+  <title>Gallery | Veera Venkata Ganesh Nurukurthi</title>
+  <link rel="canonical" href="https://nveeravenkataganesh.github.io/gallery.html"/>
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://nveeravenkataganesh.github.io/gallery.html"/>
+  <meta property="og:title" content="Gallery | Veera Venkata Ganesh Nurukurthi"/>
+  <meta property="og:description" content="Photo and video gallery — events, hackathons, and milestones."/>
+  <meta property="og:image" content="https://nveeravenkataganesh.github.io/images/Headshot.jpg"/>
+  <meta property="og:image:width" content="800"/>
+  <meta property="og:image:height" content="800"/>
+  <meta property="og:image:type" content="image/jpeg"/>
+  <meta property="og:site_name" content="Ganesh — Portfolio"/>
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Gallery | Veera Venkata Ganesh Nurukurthi"/>
+  <meta name="twitter:description" content="Photo and video gallery — events, hackathons, and milestones."/>
+  <meta name="twitter:image" content="https://nveeravenkataganesh.github.io/images/Headshot.jpg"/>
+  <meta name="twitter:creator" content="@nvganesh"/>
+  <meta name="author" content="Veera Venkata Ganesh Nurukurthi"/>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="images/Headshot.jpg"/>
+  <link rel="apple-touch-icon" href="images/Headshot.jpg"/>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <meta name="theme-color" content="#4f46e5"/>
+
+  <!-- Resource hints -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+
+  <!-- Dark-mode flash prevention — must run before body renders -->
+  <script>(function(){var t=localStorage.getItem('theme');if(t==='dark'||(t===null&&window.matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');})()</script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+
+  <style>
+    /* ── Gallery-specific tokens (extends Portfolio.css) ── */
+    :root {
+      --footer-h:         4rem;
+      --navbar-h:         56px;
+      --toolbar-h:        44px; /* gallery toolbar height */
+    }
+
+    body {
+      padding-bottom: calc(var(--footer-h) + var(--toolbar-h));
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    }
+
+    /* ── Shared header overrides for gallery page ── */
+    #site-header { z-index: 1001; }
+
+    /* View filter pills */
+    .view-pills {
+      display: flex;
+      gap: 0.25rem;
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: 2rem;
+      padding: 3px;
+    }
+    .view-pill {
+      padding: 0.25rem 0.85rem;
+      border-radius: 2rem;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .view-pill.active {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(79,70,229,0.4);
+    }
+
+    /* ── Toolbar (count + view toggle + slideshow) ── */
+    .gallery-toolbar {
+      background: var(--bg-light);
+      border-bottom: 1px solid var(--border);
+      padding: 0.5rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      transition: background var(--transition);
+    }
+    .item-counter {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .item-counter strong { color: var(--primary); }
+    .toolbar-spacer { flex: 1; }
+    .toolbar-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 0.5rem;
+      padding: 0.3rem 0.75rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all var(--transition);
+    }
+    .toolbar-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .toolbar-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .view-layout-btns { display: flex; gap: 0.25rem; }
+
+    /* ── Keyboard hint ── */
+    .kbd-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    kbd {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-size: 0.72rem;
+      color: var(--text);
+    }
+    @media (max-width: 768px) { .kbd-hint { display: none; } }
+
+    /* ── Split View ── */
+    .split-view {
+      display: flex;
+      height: calc(100vh - var(--navbar-h) - var(--footer-h) - var(--toolbar-h));
+      overflow: hidden;
+    }
+
+    /* Preview pane */
+    #previewContainer {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--border);
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+      transition: background var(--transition);
+    }
+    #previewMedia {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+    #previewMedia img, #previewMedia video {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 0.5rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    }
+    /* Fade transition for preview */
+    #previewMedia.fading { opacity: 0; transition: opacity var(--transition); }
+    #previewMedia.visible { opacity: 1; transition: opacity var(--transition); }
+
+    /* Prev / Next overlay arrows */
+    .preview-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(79,70,229,0.85);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity var(--transition), transform var(--transition);
+      z-index: 10;
+      font-size: 0.9rem;
+    }
+    #previewContainer:hover .preview-nav { opacity: 1; }
+    .preview-nav:hover { transform: translateY(-50%) scale(1.1); }
+    .preview-nav.prev { left: 14px; }
+    .preview-nav.next { right: 14px; }
+
+    /* Caption bar */
+    #captionContainer {
+      padding: 0.6rem 4rem;
+      text-align: center;
+      font-size: 0.88rem;
+      font-style: italic;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      min-height: 3rem;
+      transition: background var(--transition);
+    }
+    .caption-counter {
+      background: var(--primary);
+      color: #fff;
+      border-radius: 2rem;
+      padding: 2px 10px;
+      font-size: 0.75rem;
+      font-style: normal;
+      font-weight: 700;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .caption-type-badge {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 2rem;
+      padding: 2px 10px;
+      font-size: 0.72rem;
+      font-style: normal;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      flex-shrink: 0;
+    }
+
+    /* ── Thumbnails Panel ── */
+    #thumbsContainer {
+      width: 260px;
+      flex-shrink: 0;
+      overflow-y: auto;
+      padding: 0.75rem;
+      background: var(--bg);
+      transition: background var(--transition);
+    }
+    #thumbsContainer::-webkit-scrollbar { width: 5px; }
+    #thumbsContainer::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    #thumbsContainer::-webkit-scrollbar-track { background: transparent; }
+
+    .thumb {
+      position: relative;
+      margin-bottom: 0.6rem;
+      cursor: pointer;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      border: 2px solid transparent;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .thumb img {
+      width: 100%;
+      aspect-ratio: 16/10;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+    .thumb:hover { border-color: var(--primary); transform: translateX(-2px); }
+    .thumb:hover img { transform: scale(1.05); }
+    .thumb.active { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(79,70,229,0.25); }
+    .thumb:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+    .thumb .play-icon {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.3);
+    }
+    .thumb .play-icon i { font-size: 1.8rem; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+    .thumb .thumb-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+      color: #fff;
+      font-size: 0.7rem;
+      padding: 0.5rem 0.4rem 0.3rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+    .thumb:hover .thumb-label { opacity: 1; }
+
+    /* ── Grid View ── */
+    #gridView {
+      display: none;
+      padding: 1rem 1.25rem;
+      overflow-y: auto;
+      height: calc(100vh - var(--navbar-h) - var(--footer-h) - var(--toolbar-h));
+    }
+    #gridView.active { display: block; }
+    .split-view.grid-mode { display: none; }
+    .grid-masonry {
+      columns: 4 200px;
+      gap: 0.75rem;
+    }
+    .grid-item {
+      break-inside: avoid;
+      margin-bottom: 0.75rem;
+      border-radius: 0.6rem;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      border: 2px solid transparent;
+      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+    .grid-item img, .grid-item video {
+      width: 100%;
+      display: block;
+      border-radius: 0.5rem;
+    }
+    .grid-item:hover {
+      border-color: var(--primary);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(79,70,229,0.2);
+    }
+    .grid-item:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+    .grid-item .grid-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(79,70,229,0.75);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      opacity: 0;
+      transition: opacity var(--transition);
+      border-radius: 0.5rem;
+    }
+    .grid-item:hover .grid-overlay { opacity: 1; }
+    .grid-overlay i { color: #fff; font-size: 1.6rem; }
+    .grid-overlay span { color: #fff; font-size: 0.8rem; font-weight: 600; text-align: center; padding: 0 0.5rem; }
+
+    /* ── Lightbox ── */
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 9999;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    #lightbox.open { display: flex; animation: lbIn 0.22s ease; }
+    @keyframes lbIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    #lightbox img, #lightbox video {
+      max-width: min(90vw, 1200px);
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 0.75rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    }
+    .lb-caption {
+      color: #e2e8f0;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      font-style: italic;
+      text-align: center;
+    }
+    .lb-close {
+      position: absolute;
+      top: 1rem; right: 1.25rem;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      border-radius: 50%;
+      width: 42px; height: 42px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all var(--transition);
+    }
+    .lb-close:hover { background: #ef4444; border-color: #ef4444; transform: rotate(90deg); }
+    .lb-nav {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      border-radius: 50%;
+      width: 48px; height: 48px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all var(--transition);
+    }
+    .lb-nav:hover { background: var(--primary); border-color: var(--primary); }
+    .lb-prev { left: 1rem; }
+    .lb-next { right: 1rem; }
+    .lb-counter {
+      position: absolute;
+      top: 1rem; left: 50%; transform: translateX(-50%);
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      border-radius: 2rem;
+      padding: 0.25rem 1rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    /* ── Slideshow controls ── */
+    .slideshow-progress {
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 3px;
+      background: var(--primary-gradient);
+      transition: width 0.1s linear;
+      border-radius: 0 3px 3px 0;
+      pointer-events: none;
+    }
+
+    /* ── Empty state ── */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      gap: 0.75rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .empty-state i { font-size: 3rem; opacity: 0.3; }
+
+    /* ── Skeleton loaders ── */
+    .thumb-skeleton {
+      width: 100%;
+      aspect-ratio: 16/10;
+      background: linear-gradient(90deg, var(--bg-light) 25%, var(--border) 50%, var(--bg-light) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 0.4rem;
+      margin-bottom: 0.6rem;
+    }
+    @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+    /* ── Footer ── */
+    footer {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: var(--footer-h);
+      z-index: 500;
+    }
+
+    /* ── Error state ── */
+    .preview-error {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+    }
+    .preview-error i { font-size: 2.5rem; color: #ef4444; opacity: 0.6; }
+
+    /* ── Responsive ── */
+    @media (max-width: 991px) {
+      #thumbsContainer { display: none; }
+      .split-view { flex-direction: column; height: auto; }
+      #previewContainer { border-right: none; border-bottom: 1px solid var(--border); height: 60vw; min-height: 280px; }
+      #gridView { height: auto; }
+      .grid-masonry { columns: 2 140px; }
+    }
+    @media (max-width: 600px) {
+      .grid-masonry { columns: 2 120px; }
+      .gallery-toolbar { gap: 0.5rem; padding: 0.4rem 0.75rem; }
+    }
+
+    /* ── Autoplay badge on thumbnail ── */
+    .thumb .autoplay-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 0.4rem;
+      pointer-events: none;
+      border: 2px solid transparent;
+    }
+    .thumb.autoplay-active .autoplay-ring {
+      border-color: #f59e0b;
+      box-shadow: 0 0 0 2px rgba(245,158,11,0.3);
+    }
+
+    .gallery-current-caption { font-size: 0.83rem; color: var(--text-muted); font-style: italic; }
+    .mobile-counter-label { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; }
+
+    /* ── Toast notification ── */
+    #toast {
+      position: fixed;
+      bottom: calc(var(--footer-h) + 1rem);
+      left: 50%; transform: translateX(-50%) translateY(12px);
+      background: #1e2330;
+      color: #e2e8f0;
+      padding: 0.6rem 1.25rem;
+      border-radius: 2rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      z-index: 9000;
+      opacity: 0;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      white-space: nowrap;
+      pointer-events: none;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── Mobile bottom bar ── */
+    .mobile-nav-bar {
+      display: none;
+      position: fixed;
+      bottom: var(--footer-h);
+      left: 0; right: 0;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 0.5rem;
+      gap: 0.5rem;
+      z-index: 900;
+      justify-content: center;
+      align-items: center;
+    }
+    @media (max-width: 991px) { .mobile-nav-bar { display: flex; } }
+    .mobile-nav-btn {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 0.6rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 600;
+      transition: all var(--transition);
+    }
+    .mobile-nav-btn:hover, .mobile-nav-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+  </style>
+</head>
+<body><script>(function(){var t=document.documentElement.getAttribute('data-theme');if(t)document.body.setAttribute('data-theme',t);})()</script>
+
+  <!-- nav injected by buildNav() in js/nav.js — edit nav links/structure there -->
+  <div id="nav-root"></div>
+
+  <main id="main-content">
+  <h1 class="visually-hidden">Gallery — Photos &amp; Videos</h1>
+
+  <!-- ── TOOLBAR ── -->
+  <div class="gallery-toolbar">
+    <div class="view-pills" id="filterPills" role="group" aria-label="Filter media type">
+      <button type="button" class="view-pill active" data-filter="all" aria-pressed="true">All</button>
+      <button type="button" class="view-pill" data-filter="photo" aria-pressed="false"><i class="fas fa-image" aria-hidden="true"></i> Photos</button>
+      <button type="button" class="view-pill" data-filter="video" aria-pressed="false"><i class="fas fa-video" aria-hidden="true"></i> Videos</button>
+    </div>
+    <span class="item-counter" id="itemCounter">
+      <strong id="visibleCount">0</strong> / <span id="totalCount">0</span> items
+    </span>
+    <span id="currentCaption" class="gallery-current-caption"></span>
+    <div class="toolbar-spacer"></div>
+    <span class="kbd-hint">
+      <kbd>←</kbd><kbd>→</kbd> navigate &nbsp;·&nbsp; <kbd>Space</kbd> play/pause &nbsp;·&nbsp; <kbd>F</kbd> fullscreen
+    </span>
+    <button type="button" class="toolbar-btn" id="slideshowBtn" title="Toggle Slideshow">
+      <i class="fas fa-play"></i> Slideshow
+    </button>
+    <div class="view-layout-btns">
+      <button type="button" class="toolbar-btn active" id="splitBtn" title="Split view" aria-label="Split view">
+        <i class="fas fa-columns"></i>
+      </button>
+      <button type="button" class="toolbar-btn" id="gridBtn" title="Grid view" aria-label="Grid view">
+        <i class="fas fa-th"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── SPLIT VIEW ── -->
+  <div class="split-view" id="splitView">
+    <div id="previewContainer">
+      <button type="button" class="preview-nav prev" id="prevBtn" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+      <button type="button" class="preview-nav next" id="nextBtn" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+      <div id="previewMedia" class="visible"></div>
+      <div class="slideshow-progress" id="slideshowProgress"></div>
+      <div id="captionContainer">
+        <span class="caption-counter" id="captionCounter"></span>
+        <span id="captionText">Loading…</span>
+        <span class="caption-type-badge" id="captionType">Photo</span>
+      </div>
+    </div>
+    <div id="thumbsContainer"></div>
+  </div>
+
+  <!-- ── GRID VIEW ── -->
+  <div id="gridView">
+    <div class="grid-masonry" id="gridMasonry"></div>
+  </div>
+
+  <!-- ── LIGHTBOX ── -->
+  <div id="lightbox" role="dialog" aria-modal="true" aria-label="Lightbox viewer" aria-labelledby="lbCaption">
+    <button type="button" class="lb-close" id="lbClose" aria-label="Close lightbox"><i class="fas fa-times"></i></button>
+    <div class="lb-counter" id="lbCounter"></div>
+    <button type="button" class="lb-nav lb-prev" id="lbPrev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+    <div id="lbContent"></div>
+    <p class="lb-caption" id="lbCaption"></p>
+    <button type="button" class="lb-nav lb-next" id="lbNext" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+  </div>
+
+  <!-- ── MOBILE NAV ── -->
+  <div class="mobile-nav-bar">
+    <button type="button" class="mobile-nav-btn" id="mobilePrev"><i class="fas fa-chevron-left"></i> Prev</button>
+    <span id="mobileCounter" class="mobile-counter-label"></span>
+    <button type="button" class="mobile-nav-btn" id="mobileNext">Next <i class="fas fa-chevron-right"></i></button>
+    <button type="button" class="mobile-nav-btn" id="mobileFullscreen" aria-label="Toggle fullscreen"><i class="fas fa-expand"></i></button>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer role="contentinfo">
+    <div class="container d-flex align-items-center justify-content-between flex-wrap gap-2 py-1">
+      <p class="mb-0 small fw-semibold footer-copy">&copy; <span id="footerYear"></span> Veera Venkata Ganesh Nurukurthi</p>
+      <div class="footer-social d-flex gap-3">
+        <a href="https://www.linkedin.com/in/veera-venkata-ganesh-nurukurthi-437195226/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin fa-lg"></i></a>
+        <a href="https://github.com/NVEERAVENKATAGANESH" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github fa-lg"></i></a>
+        <a href="mailto:nveeravenkataganesh@gmail.com" aria-label="Email"><i class="fas fa-envelope fa-lg"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── TOAST ── -->
+  <div id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- main.js shared first (nav, theme, header), then gallery JS -->
+  </main>
+  <script defer src="js/main.js"></script>
+  <script defer src="js/theme.js"></script>
+  <script defer src="js/nav.js"></script>
+  <script defer src="js/gallery.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+/* ══ TOKENS ══ */
+:root{
+  --primary:#4f46e5;
+  --primary-gradient:linear-gradient(135deg,#4f46e5 0%,#06b6d4 100%);
+  --bg:#ffffff;--bg-light:#f4f6fb;--card:#ffffff;
+  --text:#1a1a2e;--text-dark:#1e2330;--text-muted:#6b7280;
+  --border:rgba(0,0,0,.09);
+  --shadow:0 2px 12px rgba(0,0,0,.07);
+  --shadow-hover:0 8px 28px rgba(0,0,0,.14);
+  --shadow-card:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);
+  --font:'Inter','Segoe UI',system-ui,sans-serif;
+  --radius:.875rem;--radius-sm:.5rem;--t:.28s ease;
+  --transition:.28s ease;
+}
+body[data-theme="dark"]{
+  --bg:#0a0d16;--bg-light:#111827;--card:#1a2235;
+  --text:#dde3f0;--text-dark:#edf0f8;--text-muted:#9ca3af;
+  --border:rgba(129,140,248,.1);
+  --shadow:0 2px 16px rgba(0,0,0,.5);
+  --shadow-hover:0 8px 32px rgba(79,70,229,.25);
+  --shadow-card:0 1px 3px rgba(0,0,0,.5),0 4px 20px rgba(0,0,0,.4);
+  /* Bootstrap 5 CSS custom properties — makes all BS utilities adapt automatically */
+  --bs-body-color:#dde3f0;
+  --bs-body-bg:#0a0d16;
+  --bs-secondary-color:rgba(136,146,164,.85);
+  --bs-secondary-rgb:136,146,164;
+  --bs-border-color:rgba(129,140,248,.1);
+  --bs-card-bg:#1a2235;
+  --bs-card-border-color:rgba(129,140,248,.1);
+  --bs-card-color:#dde3f0;
+  --bs-link-color:#818cf8;
+  --bs-link-hover-color:#a5b4fc;
+  --bs-form-control-bg:#111827;
+  --bs-form-control-border-color:rgba(129,140,248,.15);
+}

@@ -1,0 +1,39 @@
+/* ══ SKIP LINK ══ */
+.skip-link{position:absolute;top:-100%;left:1rem;background:var(--primary);color:#fff;padding:.5rem 1rem;border-radius:0 0 .5rem .5rem;font-weight:600;font-size:.9rem;z-index:9999;text-decoration:none;transition:top .2s;}
+.skip-link:focus{top:0;}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:62px;}
+body{margin:0;padding:0;font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;
+  transition:background var(--t),color var(--t);overflow-x:hidden;}
+@media(prefers-reduced-motion:no-preference){body{animation:pageLoad .45s ease-out both;}}
+@keyframes pageLoad{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+section{padding:72px 0}
+
+/* Galaxy */
+#galaxyCanvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:1;transition:opacity var(--t);}
+/* Light mode: subtle star field — stars are white so need slightly higher opacity to show */
+body[data-theme="light"] #galaxyCanvas{opacity:0.55}
+main,header,footer{position:relative;}
+
+/* Scroll bar */
+#scrollBar{position:fixed;top:0;left:0;height:3px;width:0%;z-index:9999;pointer-events:none;transition:none;background:linear-gradient(90deg,#4f46e5,#06b6d4,#8b5cf6);box-shadow:0 0 8px rgba(99,102,241,.5);}
+
+/* Galaxy background spans entire page — sections are transparent so stars show through */
+section{position:relative;}
+section>.container{position:relative;z-index:1;}
+
+/* Prevent body scroll when sidebar is open */
+body.sidebar-open{overflow:hidden;}
+
+/* Back to top */
+#backToTop{position:fixed;bottom:24px;right:24px;width:44px;height:44px;display:none;align-items:center;justify-content:center;background:var(--primary);color:#fff;border:none;border-radius:50%;box-shadow:var(--shadow-hover);transition:transform var(--t);z-index:1000;cursor:pointer;}
+#backToTop:hover{transform:translateY(-4px)}
+
+/* ══ FOOTER LAYOUT ══ */
+footer{position:relative;background:var(--bg-light);border-top:1px solid var(--border);color:var(--text-muted);padding:.75rem 0;transition:background var(--t),border-color var(--t);}
+body[data-theme="dark"] footer{background:linear-gradient(90deg,var(--bg) 0%,#131929 100%);border-top-color:rgba(255,255,255,.07);box-shadow:0 -4px 24px rgba(0,0,0,.45);}
+footer p,footer a{color:var(--text-muted);}
+body[data-theme="dark"] footer p,body[data-theme="dark"] footer a{color:#94a3b8;}
+.footer-social a{color:var(--text-muted);transition:color var(--t),transform var(--t);display:inline-block}
+.footer-social a:hover{color:var(--primary);transform:translateY(-3px)}
